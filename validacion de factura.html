@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validación Exitosa</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #FFFFFF; /* Fondo blanco */
+            color: #00FF00; /* Texto verde */
+            font-size: 24px; /* Tamaño de fuente grande */
+        }
+        .logo {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo -->
+    <img src="logo.png" alt="Logo de la empresa" class="logo">
+
+    <!-- Contenido de la página -->
+    <h1>Validación Exitosa</h1>
+    <p>¡Gracias por validar la factura!</p>
+    <p>La factura ha sido aceptada o rechazada exitosamente.</p>
+</body>
+</html>
+<script>
+  
+<script>
+    // Función para obtener el ID de la factura de la URL
+    function obtenerIDFacturaDeURL() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('id');
+    }
+
+    // Enviar la respuesta a Zapier al cargar la página
+    window.onload = function() {
+        // Obtener el ID único de la factura de la URL
+        const idFactura = obtenerIDFacturaDeURL();
+
+        // Construir el cuerpo de la solicitud
+        const cuerpoSolicitud = {
+            accion: ["enviarRespuestaAZapier('aceptar')", "enviarRespuestaAZapier('rechazar')"],
+        };
+
+        // Enviar la solicitud HTTP POST a Zapier
+        fetch('https://hooks.zapier.com/hooks/catch/18514883/3nlhftp/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(cuerpoSolicitud),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al enviar la solicitud a Zapier');
+            }
+            console.log('Solicitud enviada a Zapier correctamente');
+            // Puedes redirigir al usuario a otra página o realizar otras acciones después de enviar la respuesta
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Manejo de errores
+        });
+    };
+</script>
